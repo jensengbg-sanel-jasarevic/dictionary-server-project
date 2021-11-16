@@ -6,7 +6,7 @@ const server = express()
 // Middlewares
 
 
-// API Endpoints
+// API Routes
 
 
 module.exports = server;
