@@ -2,7 +2,7 @@ const queries = require("../model/queries.js")
 const express = require ("express");
 
 const router = express.Router() 
-
+// test
 // GET glossary words
 router.get("/", async (req, res) => {
     queries.readGlossary()
