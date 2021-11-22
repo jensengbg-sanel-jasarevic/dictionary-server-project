@@ -20,10 +20,11 @@
   "homepage": "https://github.com/jensengbg-sanel-jasarevic/server#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "pg": "^8.7.1"
+    "knex": "^0.95.14",
+    "pg": "^8.7.1",
+    "sqlite3": "^5.0.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15",
-    "sqlite3": "^5.0.2"
+    "nodemon": "^2.0.15"
   }
 }
