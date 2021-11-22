@@ -34,7 +34,10 @@ router.get("/:word", async (req, res) => {
 
 // POST word
 router.post("/:word", async (req, res) => {
-    queries.createWord( {} ) 
+    const word = req.body.word
+    const definition = req.body.definition
+
+    queries.createWord({ word: word, definition: definition }) 
     // Method is passed a argument as a value.
     // Method receives a value as a parameter.
     
