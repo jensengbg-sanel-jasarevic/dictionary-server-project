@@ -2,6 +2,7 @@ const port = process.env.PORT || 5000;
 
 // Required modules 
 const express = require("express");
+const cors = require('cors');
 const loginRouter = require("./controller/login-router.js")
 const glossaryRouter = require("./controller/glossary-router.js")
 
@@ -9,7 +10,8 @@ const glossaryRouter = require("./controller/glossary-router.js")
 const server = express() 
 
 // Middlewares 
-
+server.use(cors()) // Allows AJAX requests to skip the Same-origin policy and access resources from remote hosts.
+server.use(express.json()) // Parses JSON. On 'request' object a 'body' object containing the parsed data is populated
 
 // API routes
 server.use("/api/login", loginRouter)

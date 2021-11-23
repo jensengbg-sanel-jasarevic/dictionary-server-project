@@ -2,9 +2,9 @@ exports.up = function(knex) {
     return knex.schema
     .createTable("glossary", tbl => { 
         tbl.increments()
-        tbl.text("character")
+        tbl.text("letter")
         tbl.text("word")
-        tbl.text("definition")
+        tbl.text("information")
         tbl.text("author")
       })
       .createTable("comments", tbl => { 
