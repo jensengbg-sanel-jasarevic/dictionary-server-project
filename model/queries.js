@@ -2,12 +2,17 @@ const db = require("../dbConfiguration.js")
 
 module.exports = {
     readWords,
+    readWordsByLetter,
     readWord,
     createWord
 };
 
-function readWords() {
-    return db("glossary")
+async function readWords() {
+    return await db("glossary")
+}
+
+async function readWordsByLetter(letter) {
+    return await db("glossary").where({ letter: letter })
 }
 
 async function readWord(word) {
