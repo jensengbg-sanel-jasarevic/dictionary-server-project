@@ -10,8 +10,8 @@ router.get("/words", async (req, res) => {
     .then(success => { 
         res.status(200).json(success)
     })
-    .catch(error => { 
-        res.status(500).json({ message: "Unable to retrieve glossary" })
+    .catch(error => {
+        res.status(500).json({ message: "Unable to retrieve glossary", error: error})
     });
 })
 
@@ -23,7 +23,7 @@ router.get("/words/:letter", async (req, res) => {
         res.status(200).json(success)
     })
     .catch(error => { 
-        res.status(500).json({ message: "Unable to perform operation" })
+        res.status(500).json({ message: "Unable to perform operation", error: error })
     });
 });
 
@@ -40,15 +40,15 @@ router.get("/:word", async (req, res) => {
         }
     })
     .catch(error => {
-        res.status(500).json({ message: "Unable to perform operation" });
+        res.status(500).json({ message: "Unable to perform operation", error: error });
     });
 });
 
 // POST specific word
 router.post("/:word", async (req, res) => {
     // Collect form values.
-    const letter = req.body.word.charAt(0).toLowerCase()
-    const word = req.body.word
+    const letter = req.params.word.charAt(0).toLowerCase()
+    const word = req.params.word
     const information = req.body.information
 
     await queries.createWord({ letter: letter, word: word, information: information }) 
@@ -59,8 +59,23 @@ router.post("/:word", async (req, res) => {
         res.status(201).json(success)
     })
     .catch(error => { 
-        res.status(500).json({ message: "Unable to perform operation" })
+        res.status(500).json({ message: "Unable to perform operation", error: error })
     });
 })
+
+// PATCH specific word
+router.patch("/:word", async (req, res) => { 
+    const word = req.params.word
+    const updatedInfo = req.body.information
+
+    await queries.updateWord(word, updatedInfo)
+
+    .then(success => { 
+        res.status(200).json(success)
+    })
+    .catch(error => { 
+        res.status(500).json({ message: "Unable to perform operation", error: error })
+    });
+});
 
 module.exports = router;
