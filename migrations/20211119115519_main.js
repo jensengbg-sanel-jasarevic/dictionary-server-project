@@ -1,7 +1,7 @@
 exports.up = function(knex) {
     return knex.schema
     .createTable("glossary", tbl => { 
-        tbl.increments()
+        tbl.increments() // This is for identifying a resource. The URI (Uniform Resource Identifier).
         tbl.text("letter")
         tbl.text("word")
         tbl.text("information")
@@ -11,8 +11,7 @@ exports.up = function(knex) {
         tbl.increments()
         tbl.text("author")
         tbl.text("comment")
-        tbl.text("like")
-        tbl.text("dislike")
+        tbl.integer("like")
       })      
 };
 

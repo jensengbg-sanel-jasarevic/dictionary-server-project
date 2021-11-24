@@ -4,7 +4,8 @@ module.exports = {
     readWords,
     readWordsByLetter,
     readWord,
-    createWord
+    createWord,
+    updateWord
 };
 
 async function readWords() {
@@ -21,4 +22,12 @@ async function readWord(word) {
 
 async function createWord(word) {
     return await db("glossary").insert(word, ['id'])
+}
+
+async function updateWord(word, updatedInfo) {
+    return await db("glossary").where({ word: word })
+    .update({ information: updatedInfo })
+    .then(() => {  
+        return readWord(word);
+    });
 }

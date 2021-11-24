@@ -10,13 +10,12 @@ const glossaryRouter = require("./controller/glossary-router.js")
 const server = express() 
 
 // Middlewares 
-server.use(cors()) // Allows AJAX requests to skip the Same-origin policy and access resources from remote hosts.
+server.use(cors()) // Allows AJAX requests to skip the Same-origin policy and access resources from remote hosts
 server.use(express.json()) // Parses JSON. On 'request' object a 'body' object containing the parsed data is populated
 
-// API routes
+// API endpoints 
 server.use("/api/login", loginRouter)
 server.use("/api/glossary", glossaryRouter)
-
 
 // Listen for requests from client on servers port
 server.listen(port, () => {    
