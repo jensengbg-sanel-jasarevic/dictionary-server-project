@@ -21,3 +21,5 @@ server.use("/api/glossary", glossaryRouter)
 server.listen(port, () => {    
     console.log(`Server running on port ${port}`)
 })
+
+module.exports = server; // Exports the code module for utilization in Business layer testing
