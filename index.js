@@ -5,6 +5,7 @@ const express = require("express");
 const cors = require('cors');
 const loginRouter = require("./controller/login-router.js")
 const glossaryRouter = require("./controller/glossary-router.js")
+const commentsRouter = require("./controller/comments-router.js")
 
 // Start using Express framework
 const server = express() 
@@ -16,6 +17,7 @@ server.use(express.json()) // Parses JSON. On 'request' object a 'body' object c
 // API endpoints 
 server.use("/api/login", loginRouter)
 server.use("/api/glossary", glossaryRouter)
+server.use("/api/comments", commentsRouter)
 
 // Listen for requests from client on servers port
 server.listen(port, () => {    
