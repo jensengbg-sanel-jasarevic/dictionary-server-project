@@ -19,14 +19,24 @@ router.get("/", (req, res) => {
 router.post("/", async (req, res) => {
      try {
         let comment = await queries.createComment({ 
-           // wordUID: `${req.body.wordUID}`,
-            author: `${req.body.author}`,
-            comment: `${req.body.comment}`
+            word: `${req.body.word}`,
+            comment: `${req.body.comment}`,
+            author: `${req.body.author}`
          })
          res.status(200).json(comment)
      } catch(error) {
         res.status(500).json({ message: "Unable to perform operation", error: error })
      }
+})
+
+// PATCH votes
+router.patch("/", async (req, res) => {
+    try {
+    await queries.updateVotes(req.body.author)
+    res.status(200).json({ message: "Operation succesfull"})
+    } catch(error) {
+       res.status(500).json({ message: "Unable to perform operation", error: error })
+    }
 })
 
 module.exports = router;

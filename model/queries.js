@@ -1,14 +1,19 @@
 const db = require("../dbConfiguration.js") 
 
 module.exports = {
+    createWord,
     readWords,
     readWordsByLetter,
     readWord,
-    createWord,
     updateWord,
+    createComment,
     readComments,
-    createComment
+    updateVotes
 };
+
+async function createWord(word) {
+    return await db("glossary").insert(word, ['id'])
+}
 
 async function readWords() {
     return await db("glossary")
@@ -22,10 +27,6 @@ async function readWord(word) {
     return await db("glossary").where({ word: word })
 }
 
-async function createWord(word) {
-    return await db("glossary").insert(word, ['id'])
-}
-
 async function updateWord(word, updatedInfo) {
     return await db("glossary").where({ word: word })
     .update({ information: updatedInfo })
@@ -34,10 +35,15 @@ async function updateWord(word, updatedInfo) {
     });
 }
 
+async function createComment(comment) {
+    return await db("comments").insert(comment, ['id'])
+}
+
 async function readComments() {
     return db("comments")
 }
 
-async function createComment(comment) {
-    return await db("comments").insert(comment, ['id'])
+async function updateVotes(author) {
+    return await db("comments").where({ author: author })
+    .increment('votes', 1)
 }
