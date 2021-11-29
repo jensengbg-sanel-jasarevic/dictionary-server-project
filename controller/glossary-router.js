@@ -11,7 +11,7 @@ router.get("/words", async (req, res) => {
         res.status(200).json(success)
     })
     .catch(error => {
-        res.status(500).json({ message: "Unable to retrieve glossary", error: error})
+        res.status(500).json({ message: "Unable to retrieve glossary", error: error })
     });
 })
 
@@ -33,7 +33,7 @@ router.get("/:word", async (req, res) => {
 
     .then(success => {
         if (success.length > 0) {
-            res.status(200).json({ message: "Operation successful" });
+            res.status(200).json(success);
         } 
         else { 
             res.status(404).json({ message: "Record not found" });
