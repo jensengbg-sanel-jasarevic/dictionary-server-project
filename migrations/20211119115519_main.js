@@ -9,9 +9,10 @@ exports.up = function(knex) {
       })
       .createTable("comments", tbl => { 
         tbl.increments()
-        tbl.text("author")
+        tbl.text("word")
         tbl.text("comment")
-        tbl.integer("like")
+        tbl.text("author")
+        tbl.integer("votes")
       })      
 };
 

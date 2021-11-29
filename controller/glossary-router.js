@@ -48,10 +48,11 @@ router.get("/:word", async (req, res) => {
 router.post("/:word", async (req, res) => {
     // Collect form values.
     const letter = req.params.word.charAt(0).toLowerCase()
-    const word = req.params.word
+    const word = req.params.word.toUpperCase()
     const information = req.body.information
+    const author = req.body.author
 
-    await queries.createWord({ letter: letter, word: word, information: information }) 
+    await queries.createWord({ letter: letter, word: word, information: information, author: author }) 
     // Method is passed a argument as a value.
     // Method receives a value as a parameter.
     
