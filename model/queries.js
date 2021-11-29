@@ -5,7 +5,9 @@ module.exports = {
     readWordsByLetter,
     readWord,
     createWord,
-    updateWord
+    updateWord,
+    readComments,
+    createComment
 };
 
 async function readWords() {
@@ -30,4 +32,12 @@ async function updateWord(word, updatedInfo) {
     .then(() => {  
         return readWord(word);
     });
+}
+
+async function readComments() {
+    return db("comments")
+}
+
+async function createComment(comment) {
+    return await db("comments").insert(comment, ['id'])
 }
