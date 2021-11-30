@@ -43,7 +43,7 @@ async function readComments() {
     return db("comments")
 }
 
-async function updateVotes(author) {
-    return await db("comments").where({ author: author })
+async function updateVotes(payload) {
+    return await db("comments").where({ word: payload.word, author: payload.author })
     .increment('votes', 1)
 }

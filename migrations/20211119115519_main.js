@@ -12,7 +12,7 @@ exports.up = function(knex) {
         tbl.text("word")
         tbl.text("comment")
         tbl.text("author")
-        tbl.integer("votes")
+        tbl.integer("votes").defaultTo(0)
       })      
 };
 
