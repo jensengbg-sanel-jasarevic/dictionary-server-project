@@ -1,8 +1,8 @@
+const express = require("express");
+const cors = require('cors');
 const port = process.env.PORT || 5000;
 
 // Required modules 
-const express = require("express");
-const cors = require('cors');
 const loginRouter = require("./controller/login-router.js")
 const glossaryRouter = require("./controller/glossary-router.js")
 const commentsRouter = require("./controller/comments-router.js")
