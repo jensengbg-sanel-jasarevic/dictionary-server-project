@@ -8,7 +8,7 @@ module.exports = {
     updateWord,
     createComment,
     readComments,
-    updateVotes
+    updateCommentVotes
 };
 
 async function createWord(word) {
@@ -43,7 +43,7 @@ async function readComments() {
     return db("comments")
 }
 
-async function updateVotes(payload) {
-    return await db("comments").where({ word: payload.word, author: payload.author })
+async function updateCommentVotes(comment) {
+    return await db("comments").where({ comment: comment })
     .increment('votes', 1)
 }

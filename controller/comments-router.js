@@ -29,11 +29,11 @@ router.post("/", async (req, res) => {
      }
 })
 
-// PATCH votes
+// PATCH comment votes
 router.patch("/", async (req, res) => {
-    let payload = req.body
+    let comment = req.body.comment
     try {
-    await queries.updateVotes(payload)
+    await queries.updateCommentVotes(comment)
     res.status(200).json({ message: "Operation succesfull"})
     } catch(error) {
        res.status(500).json({ message: "Unable to perform operation", error: error })
