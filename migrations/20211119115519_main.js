@@ -13,6 +13,7 @@ exports.up = function(knex) {
         tbl.text("comment")
         tbl.text("author")
         tbl.integer("votes").defaultTo(0)
+        tbl.timestamp('created_at').defaultTo(knex.fn.now())
       })      
 };
 
