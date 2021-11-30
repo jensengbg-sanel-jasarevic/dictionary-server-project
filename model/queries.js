@@ -12,23 +12,23 @@ module.exports = {
 };
 
 async function createWord(word) {
-    return await db("glossary").insert(word, ['id'])
+    return await db("dictionary").insert(word, ['id'])
 }
 
 async function readWords() {
-    return await db("glossary")
+    return await db("dictionary")
 }
 
 async function readWordsByLetter(letter) {
-    return await db("glossary").where({ letter: letter })
+    return await db("dictionary").where({ letter: letter })
 }
 
 async function readWord(word) {
-    return await db("glossary").where({ word: word })
+    return await db("dictionary").where({ word: word })
 }
 
 async function updateWord(word, updatedInfo) {
-    return await db("glossary").where({ word: word })
+    return await db("dictionary").where({ word: word })
     .update({ information: updatedInfo })
     .then(() => {  
         return readWord(word);
