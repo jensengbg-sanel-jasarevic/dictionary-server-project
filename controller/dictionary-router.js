@@ -11,7 +11,7 @@ router.get("/words", async (req, res) => {
         res.status(200).json(success)
     })
     .catch(error => {
-        res.status(500).json({ message: "Unable to retrieve glossary", error: error })
+        res.status(500).json({ message: "Unable to retrieve dictionary", error: error })
     });
 })
 
