@@ -46,7 +46,4 @@ async function readComments() {
 async function updateCommentVotes(comment) {
     return await db("comments").where({ comment: comment })
     .increment('votes', 1)
-    .then(() => {  
-        return readComments();
-    });
 }
