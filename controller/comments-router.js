@@ -8,6 +8,7 @@ router.get("/", (req, res) => {
     queries.readComments()
     
     .then(comments => { 
+        console.log(comments)
         res.status(200).json(comments)
     })
     .catch(error => { 
@@ -32,14 +33,12 @@ router.post("/", async (req, res) => {
 // PATCH comment votes
 router.patch("/", async (req, res) => {
     let comment = req.body.comment
+    try {
     await queries.updateCommentVotes(comment)
-    .then(comments => { 
-        console.log(comments)
-        res.status(200).json(comments)
-    })
-    .catch(error => { 
-        res.status(500).json({ message: "Unable to perform operation", error: error })
-    });
+    res.status(200).json({ message: "Operation succesfull"})
+    } catch(error) {
+       res.status(500).json({ message: "Unable to perform operation", error: error })
+    }
 })
 
 module.exports = router;

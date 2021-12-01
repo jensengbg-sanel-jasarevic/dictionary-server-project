@@ -40,7 +40,7 @@ async function createComment(comment) {
 }
 
 async function readComments() {
-    return db("comments")
+    return db("comments").orderBy('id')
 }
 
 async function updateCommentVotes(comment) {
