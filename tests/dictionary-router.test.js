@@ -8,7 +8,7 @@ test("should return HTTP status code 200 when hitting interface endpoint that ge
     let actual;
         
     // Act
-    await supertest(app).get('/api/glossary/words')
+    await supertest(app).get('/api/dictionary/words')
     .then((resp) => {
         actual = resp.statusCode
     })

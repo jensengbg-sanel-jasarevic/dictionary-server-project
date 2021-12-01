@@ -6,7 +6,6 @@ const router = express.Router()
 // GET comments
 router.get("/", (req, res) => {
     queries.readComments()
-    
     .then(comments => { 
         res.status(200).json(comments)
     })
@@ -29,10 +28,11 @@ router.post("/", async (req, res) => {
      }
 })
 
-// PATCH votes
+// PATCH comment votes
 router.patch("/", async (req, res) => {
+    let comment = req.body.comment
     try {
-    await queries.updateVotes(req.body.author)
+    await queries.updateCommentVotes(comment)
     res.status(200).json({ message: "Operation succesfull"})
     } catch(error) {
        res.status(500).json({ message: "Unable to perform operation", error: error })

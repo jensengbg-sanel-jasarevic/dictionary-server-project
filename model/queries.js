@@ -8,27 +8,27 @@ module.exports = {
     updateWord,
     createComment,
     readComments,
-    updateVotes
+    updateCommentVotes
 };
 
 async function createWord(word) {
-    return await db("glossary").insert(word, ['id'])
+    return await db("dictionary").insert(word, ['id'])
 }
 
 async function readWords() {
-    return await db("glossary")
+    return await db("dictionary")
 }
 
 async function readWordsByLetter(letter) {
-    return await db("glossary").where({ letter: letter })
+    return await db("dictionary").where({ letter: letter })
 }
 
 async function readWord(word) {
-    return await db("glossary").where({ word: word })
+    return await db("dictionary").where({ word: word })
 }
 
 async function updateWord(word, updatedInfo) {
-    return await db("glossary").where({ word: word })
+    return await db("dictionary").where({ word: word })
     .update({ information: updatedInfo })
     .then(() => {  
         return readWord(word);
@@ -40,10 +40,10 @@ async function createComment(comment) {
 }
 
 async function readComments() {
-    return db("comments")
+    return db("comments").orderBy('id')
 }
 
-async function updateVotes(author) {
-    return await db("comments").where({ author: author })
+async function updateCommentVotes(comment) {
+    return await db("comments").where({ comment: comment })
     .increment('votes', 1)
 }

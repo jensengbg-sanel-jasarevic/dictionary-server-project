@@ -1,7 +1,7 @@
 // Database layer testing
 const queries = require("../model/queries.js"); 
 
-test("should return 5 columns from 'Glossary' table", async () => {
+test("should return 5 columns from 'Dictionary' table", async () => {
     // Arrange
     let expected = 5
     let actual;
@@ -15,7 +15,7 @@ test("should return 5 columns from 'Glossary' table", async () => {
     expect(actual).toBe(expected);
 });
 
-test("should create a word successfully on the 'Glossary' table", async () => {
+test("should create a word successfully on the 'Dictionary' table", async () => {
     // Arrange
     const expected = "lorem ipsum"
     let actual;
