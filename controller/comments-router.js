@@ -6,9 +6,7 @@ const router = express.Router()
 // GET comments
 router.get("/", (req, res) => {
     queries.readComments()
-    
     .then(comments => { 
-        console.log(comments)
         res.status(200).json(comments)
     })
     .catch(error => { 
