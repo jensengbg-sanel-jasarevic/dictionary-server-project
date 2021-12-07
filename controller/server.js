@@ -1,11 +1,9 @@
-const port = process.env.PORT || 5000;
-
 // Required modules 
 const express = require("express");
 const cors = require('cors');
-const loginRouter = require("./controller/login-router.js")
-const dictionaryRouter = require("./controller/dictionary-router.js")
-const commentsRouter = require("./controller/comments-router.js")
+const loginRouter = require("./login-router.js")
+const dictionaryRouter = require("./dictionary-router.js")
+const commentsRouter = require("./comments-router.js")
 
 // Start using Express framework
 const server = express() 
@@ -19,10 +17,5 @@ server.get("/", (req, res) => {res.send("Server API")})
 server.use("/api/login", loginRouter)
 server.use("/api/dictionary", dictionaryRouter)
 server.use("/api/comments", commentsRouter)
-
-// Listen for requests from client on servers port
-server.listen(port, () => {    
-    console.log(`Server running on port ${port}`)
-})
 
 module.exports = server; // Exports the code module for utilization in Business layer testing
