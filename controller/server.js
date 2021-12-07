@@ -8,9 +8,9 @@ const server = express();
 
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const userRouter = require("./controller/user-router.js");
-const dictionaryRouter = require("./controller/dictionary-router.js");
-const commentsRouter = require("./controller/comments-router.js");
+const userRouter = require("../controller/user-router");
+const dictionaryRouter = require("../controller/dictionary-router.js");
+const commentsRouter = require("../controller/comments-router.js");
 const passport = require("passport");
 
 // Middlewares
@@ -26,10 +26,5 @@ server.get("/", (req, res) => {
 server.use("/api/user", userRouter);
 server.use("/api/dictionary", dictionaryRouter);
 server.use("/api/comments", commentsRouter);
-
-// Listen for requests from client on servers port
-server.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
 
 module.exports = server; // Exports the code module for utilization in Business layer testing
