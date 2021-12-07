@@ -8,7 +8,7 @@ const Extracter = require("passport-jwt").ExtractJwt;
 
 const cookieExtractor = (req) => {
   let token = null;
-  console.log("req.cookies: " + req.headers("authorization"));
+  console.log("req.cookies: " + req);
   console.log("access_token: " + req.cookies["access_token"]);
   token = req.header("authorization");
   return token;
@@ -36,6 +36,17 @@ passport.use(
   )
 );
 
+passport.use(
+  "admin-local",
+  new JwtStrategy(
+    {
+      jwtFromRequest: cookieExtractor,
+      secretOrKey: process.env.SESSION_SECRET,
+    },
+    authorizationAdmin
+  )
+);
+
 function authenticate(req, email, password, done) {
   let userEmail = req.body.email;
   let userPwd = req.body.password;
@@ -57,6 +68,19 @@ function authenticate(req, email, password, done) {
 //authorization to protect account endpoints
 function authorization(id, done) {
   queries.readUser(id.sub).then((user) => {
+    if (!user[0]) {
+      return done(null, false, {
+        message: "Invalid user",
+      });
+    }
+    return done(null, user[0]);
+  });
+}
+
+//authorization to protect admin account endpoints
+function authorizationAdmin(email, done) {
+  console.log("here");
+  queries.readAdminUser(email.sub).then((user) => {
     if (!user[0]) {
       return done(null, false, {
         message: "Invalid user",

@@ -6,12 +6,15 @@ module.exports = {
   readWordsByLetter,
   readWord,
   updateWord,
+  deleteWord,
   createComment,
   readComments,
   updateCommentVotes,
+  deleteComment,
   createUser,
   readUser,
   readUserById,
+  readAdminUser,
   updateUserPassword,
   deleteUser,
 };
@@ -32,13 +35,20 @@ async function readWord(word) {
   return await db("dictionary").where({ word: word });
 }
 
-async function updateWord(word, updatedInfo) {
+async function updateWord(reformInformation) {
   return await db("dictionary")
-    .where({ word: word })
-    .update({ information: updatedInfo })
+    .where({ word: reformInformation.word })
+    .update({
+      information: reformInformation.comment,
+      author: reformInformation.author,
+    })
     .then(() => {
-      return readWord(word);
+      return readWord(reformInformation.word);
     });
+}
+
+function deleteWord(word) {
+  return db("dictionary").where({ word: word }).del();
 }
 
 async function createComment(comment) {
@@ -49,8 +59,12 @@ async function readComments() {
   return db("comments").orderBy("id");
 }
 
-async function updateCommentVotes(comment) {
-  return await db("comments").where({ comment: comment }).increment("votes", 1);
+async function updateCommentVotes(commentID) {
+  return await db("comments").where({ id: commentID }).increment("votes", 1);
+}
+
+function deleteComment(commentID) {
+  return db("comments").where({ id: commentID }).del();
 }
 
 async function createUser(user) {
@@ -63,6 +77,10 @@ async function readUser(email) {
 
 async function readUserById(id) {
   return await db("users").where({ id: id });
+}
+
+async function readAdminUser(email) {
+  return await db("users").where({ email: email }).andWhere({ role: "admin" });
 }
 
 async function updateUserPassword(email, updatedPassword) {
