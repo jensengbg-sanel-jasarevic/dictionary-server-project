@@ -11,7 +11,7 @@ router.get("/words", async (req, res) => {
         res.status(200).json(success)
     })
     .catch(error => {
-        res.status(500).json({ message: "Unable to retrieve glossary", error: error })
+        res.status(500).json({ message: "Unable to retrieve the dictionary", error: error })
     });
 })
 
@@ -23,7 +23,7 @@ router.get("/words/:letter", async (req, res) => {
         res.status(200).json(success)
     })
     .catch(error => { 
-        res.status(500).json({ message: "Unable to perform operation", error: error })
+        res.status(500).json({ message: "Unable to perform the operation", error: error })
     });
 });
 
@@ -40,13 +40,13 @@ router.get("/:word", async (req, res) => {
         }
     })
     .catch(error => {
-        res.status(500).json({ message: "Unable to perform operation", error: error });
+        res.status(500).json({ message: "Unable to perform the operation", error: error });
     });
 });
 
 // POST specific word
 router.post("/:word", async (req, res) => {
-    // Collect form values.
+    // Collect form values
     const letter = req.params.word.charAt(0).toLowerCase()
     const word = req.params.word.toUpperCase()
     const information = req.body.information
@@ -60,22 +60,19 @@ router.post("/:word", async (req, res) => {
         res.status(201).json(success)
     })
     .catch(error => { 
-        res.status(500).json({ message: "Unable to perform operation", error: error })
+        res.status(500).json({ message: "Unable to perform the operation", error: error })
     });
 })
 
-// PATCH specific word
-router.patch("/:word", async (req, res) => { 
-    const word = req.params.word
-    const updatedInfo = req.body.information
-
-    await queries.updateWord(word, updatedInfo)
-
+// PUT specific word
+router.put("/:word", async (req, res) => { 
+    const reformInformation = req.body
+    await queries.updateWord(reformInformation)
     .then(success => { 
         res.status(200).json(success)
     })
     .catch(error => { 
-        res.status(500).json({ message: "Unable to perform operation", error: error })
+        res.status(500).json({ message: "Unable to perform the operation", error: error })
     });
 });
 

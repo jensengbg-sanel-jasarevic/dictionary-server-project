@@ -8,30 +8,31 @@ module.exports = {
     updateWord,
     createComment,
     readComments,
-    updateVotes
+    updateCommentVotes,
+    deleteComment
 };
 
 async function createWord(word) {
-    return await db("glossary").insert(word, ['id'])
+    return await db("dictionary").insert(word, ['id'])
 }
 
 async function readWords() {
-    return await db("glossary")
+    return await db("dictionary")
 }
 
 async function readWordsByLetter(letter) {
-    return await db("glossary").where({ letter: letter })
+    return await db("dictionary").where({ letter: letter })
 }
 
 async function readWord(word) {
-    return await db("glossary").where({ word: word })
+    return await db("dictionary").where({ word: word })
 }
 
-async function updateWord(word, updatedInfo) {
-    return await db("glossary").where({ word: word })
-    .update({ information: updatedInfo })
+async function updateWord(reformInformation) {
+    return await db("dictionary").where({ word: reformInformation.word })
+    .update({ information: reformInformation.comment, author: reformInformation.author })
     .then(() => {  
-        return readWord(word);
+        return readWord(reformInformation.word);
     });
 }
 
@@ -40,10 +41,14 @@ async function createComment(comment) {
 }
 
 async function readComments() {
-    return db("comments")
+    return db("comments").orderBy('id')
 }
 
-async function updateVotes(payload) {
-    return await db("comments").where({ word: payload.word, author: payload.author })
+async function updateCommentVotes(commentID) {
+    return await db("comments").where({ id: commentID })
     .increment('votes', 1)
+}
+
+function deleteComment(commentID) {
+    return db("comments").where({ id: commentID }).del()
 }

@@ -1,6 +1,6 @@
 exports.up = function(knex) {
     return knex.schema
-    .createTable("glossary", tbl => { 
+    .createTable("dictionary", tbl => { 
         tbl.increments() // For identifying a resource. The URI (Uniform Resource Identifier).
         tbl.text("letter")
         tbl.text("word")
@@ -13,6 +13,7 @@ exports.up = function(knex) {
         tbl.text("comment")
         tbl.text("author")
         tbl.integer("votes").defaultTo(0)
+        tbl.timestamp('created_at').defaultTo(knex.fn.now())
       })      
 };
 
