@@ -15,6 +15,16 @@ exports.up = function(knex) {
         tbl.integer("votes").defaultTo(0)
         tbl.timestamp('created_at').defaultTo(knex.fn.now())
       })      
+      .createTable("users", tbl => { 
+        tbl.increments()
+        tbl.text("firstname")
+        tbl.text("lastname")
+        tbl.text("email")
+        tbl.text("password")
+        tbl.text("role")
+        tbl.timestamp("termsAcceptDate")
+        tbl.timestamp('created_at').defaultTo(knex.fn.now())
+      })    
 };
 
 exports.down = function(knex) {
