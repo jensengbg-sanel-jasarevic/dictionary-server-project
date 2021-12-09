@@ -41,7 +41,6 @@ router.get("/:word", async (req, res) => {
 // POST specific word
 router.post("/:word", async (req, res) => {
   const token = req.headers['authorization'].split(' ')[1];
-
   try {
     jwt.verify(token, process.env.PRIVATE_KEY);
 
@@ -52,44 +51,31 @@ router.post("/:word", async (req, res) => {
       const information = req.body.information;
       const author = req.body.author;
 
-      // Method is passed a argument as a value. Method receives a value as a parameter.      
       await queries.createWord({ letter: letter, word: word, information: information, author: author })
-      res.status(201).json({ message: "Word successfully created." });
+      res.status(201).json({ message: "Word successfully created" });
       } else {
-        res.status(403).json({ message: "Client does not have access rights." }) 
+        res.status(403).json({ message: "Client does not have access rights" }) 
       }   
   } catch {
     res.status(401).json({ message: "Unauthorized. Client must authenticate to get the requested response." }) 
   }
 });
 
-/*
 // PUT specific word
-router.put(
-  "/:word",
-  passport.authenticate("admin-local", { session: false }),
-  async (req, res) => {
-    //Check if the user from request is authorized admin user else send 401 error
-    if (req.isAuthenticated()) {
-      const reformInformation = req.body;
-      await queries
-        .updateWord(reformInformation)
-        .then((success) => {
-          res.status(200).json(success);
-        })
-        .catch((error) => {
-          res
-            .status(500)
-            .json({ message: "Unable to perform the operation", error: error });
-        });
+router.put("/:word", async (req, res) => { 
+  const token = req.headers['authorization'].split(' ')[1];
+  try {
+    jwt.verify(token, process.env.PRIVATE_KEY);
+
+    if (req.body.role === "admin") {
+      await queries.updateWord(req.body.payload)
+      res.status(201).json({ message: "Word information successfully updated" });
     } else {
-      res.status(401).json({
-        message: "Update failed as the user is not authorized",
-        success: false,
-      });
-    }
+      res.status(403).json({ message: "Client does not have access rights" }) 
+    }   
+  } catch {
+    res.status(401).json({ message: "Unauthorized. Client must authenticate to get the requested response." }) 
   }
-);
-*/
+});
 
 module.exports = router;

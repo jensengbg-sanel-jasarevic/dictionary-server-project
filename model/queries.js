@@ -36,15 +36,15 @@ async function readWord(word) {
   return await db("dictionary").where({ word: word });
 }
 
-async function updateWord(reformInformation) {
+async function updateWord(payload) {
   return await db("dictionary")
-    .where({ word: reformInformation.word })
+    .where({ word: payload.word })
     .update({
-      information: reformInformation.comment,
-      author: reformInformation.author,
+      information: payload.comment,
+      author: payload.author,
     })
     .then(() => {
-      return readWord(reformInformation.word);
+      return readWord(payload.word);
     });
 }
 
