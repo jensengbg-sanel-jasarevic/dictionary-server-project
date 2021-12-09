@@ -1,5 +1,5 @@
-## Backend for app Online Dictionary
-This is a server software that provides functionality for the client.
+## Backend - Online Dictionary
+Server software.
 
-### API URL
+### Web address URL
 https://serverexamensarbete.herokuapp.com/

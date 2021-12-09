@@ -32,6 +32,6 @@ module.exports = {
       },
   };
 
-// Generate migration file: 'npx knex migrate:make [filename]'. 
-// Database schema builder, tables will be created there.
-// Run 'npx knex migrate:latest' to drop the schema builder (with all tables)
+// Generate migration file: 'npx knex migrate:make [filename]'.
+// Schema builder for database will be in migration file. The plan for how the database will be constructed will be created there.
+// To run a migration: 'npx knex migrate:latest'.
