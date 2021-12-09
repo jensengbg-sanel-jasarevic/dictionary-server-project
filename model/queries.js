@@ -6,7 +6,6 @@ module.exports = {
   readWordsByLetter,
   readWord,
   updateWord,
-  deleteWord,
   createComment,
   readComments,
   updateCommentVotes,
@@ -46,10 +45,6 @@ async function updateWord(payload) {
     });
 }
 
-function deleteWord(word) {
-  return db("dictionary").where({ word: word }).del();
-}
-
 async function createComment(comment) {
   return await db("comments").insert(comment, ["id"]);
 }
@@ -62,7 +57,7 @@ async function updateCommentVotes(commentID) {
   return await db("comments").where({ id: commentID }).increment("votes", 1);
 }
 
-function deleteComment(commentID) {
+async function deleteComment(commentID) {
   return db("comments").where({ id: commentID }).del();
 }
 

@@ -1,5 +1,6 @@
 const queries = require("../model/queries.js")
 const express = require ("express");
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const salt = bcrypt.genSaltSync(10);
@@ -43,17 +44,21 @@ router.patch("/", async (req, res) => {
 
 // DELETE account
 router.delete("/", async (req, res) => { 
-    await queries.deleteUser(req.body.email)
-    .then(count => { 
-        if (count > 0) { 
-            res.status(200).json({ message: "Account successfully deleted." });
-        } 
-        else { 
-            res.status(404).json({ message: "Account not found." });
-        }
-    }).catch(error => {
-        res.status(500).json({ message: "Unable to perform operation.", error: error });
-    });
+    try {
+        const token = req.headers['authorization'].split(' ')[1];
+        jwt.verify(token, process.env.PRIVATE_KEY);
+
+        await queries.deleteUser(req.body.email)
+        .then(count => { 
+            if (count > 0) { 
+                res.status(200).json({ message: "Account successfully deleted." });
+            } else { 
+                res.status(404).json({ message: "Account not found." });
+            }
+        })
+    } catch {
+        res.status(401).json({ message: "Unauthorized. Client must authenticate for the request." })         
+    }
 });
 
 module.exports = router;

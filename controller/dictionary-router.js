@@ -40,8 +40,8 @@ router.get("/:word", async (req, res) => {
 
 // POST specific word
 router.post("/:word", async (req, res) => {
-  const token = req.headers['authorization'].split(' ')[1];
   try {
+    const token = req.headers['authorization'].split(' ')[1];
     jwt.verify(token, process.env.PRIVATE_KEY);
 
     if (req.body.role === "admin") {
@@ -57,14 +57,14 @@ router.post("/:word", async (req, res) => {
         res.status(403).json({ message: "Client does not have access rights" }) 
       }   
   } catch {
-    res.status(401).json({ message: "Unauthorized. Client must authenticate to get the requested response." }) 
+    res.status(401).json({ message: "Unauthorized. Client must authenticate for the request." }) 
   }
 });
 
 // PUT specific word
 router.put("/:word", async (req, res) => { 
-  const token = req.headers['authorization'].split(' ')[1];
   try {
+    const token = req.headers['authorization'].split(' ')[1];
     jwt.verify(token, process.env.PRIVATE_KEY);
 
     if (req.body.role === "admin") {
@@ -74,7 +74,7 @@ router.put("/:word", async (req, res) => {
       res.status(403).json({ message: "Client does not have access rights" }) 
     }   
   } catch {
-    res.status(401).json({ message: "Unauthorized. Client must authenticate to get the requested response." }) 
+    res.status(401).json({ message: "Unauthorized. Client must authenticate for the request." }) 
   }
 });
 
