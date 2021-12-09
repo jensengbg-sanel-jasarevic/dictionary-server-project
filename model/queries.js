@@ -1,4 +1,4 @@
-const db = require("../dbConfiguration.js");
+const db = require("./index-db.js");
 
 module.exports = {
   createWord,
@@ -13,11 +13,9 @@ module.exports = {
   deleteComment,
   createUser,
   readUser,
-  readUserById,
-  readAdminUser,
   updateUserPassword,
   updateUserState,
-  deleteUser,
+  deleteUser
 };
 
 async function createWord(word) {
@@ -74,14 +72,6 @@ async function createUser(user) {
 
 async function readUser(email) {
   return await db("users").where({ email: email });
-}
-
-async function readUserById(id) {
-  return await db("users").where({ id: id });
-}
-
-async function readAdminUser(email) {
-  return await db("users").where({ email: email }).andWhere({ role: "admin" });
 }
 
 async function updateUserPassword(email, updatedPassword) {

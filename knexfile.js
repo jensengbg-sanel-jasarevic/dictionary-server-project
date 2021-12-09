@@ -1,14 +1,12 @@
-// In this file we configurate the database we are going to interact with & location of database.
-
-// Generate migration file: 'npx knex migrate:make [filename]'. Schema builder is there. All tables should be defined in schema.
-// Run 'npx knex migrate:latest' to drop schema builder (all tables).
+// Database configuration for development & production. The app will interact with one of these databases.
+// Settings for organizing where database file should be stored locally & on Internet
 
 module.exports = {
     development: {
-      client: 'sqlite3', // Determine which database management system to use.
+      client: 'sqlite3', // Determine which database management system to use
       useNullAsDefault: true, 
       connection: {
-        filename: "./model/data/main.db3", // This file is the database. Filename extensions for SQLite are '.db3' & '.sqlite3'. 
+        filename: "./model/data/main.db3", // File extension suffix '.db3' indicates that the data in this type of file format is organized in a way that SQLite software can open it
       },
       pool: {
         afterCreate: (conn, done) => {
@@ -23,7 +21,7 @@ module.exports = {
         ssl: { rejectUnauthorized: false }
       }
     },  
-      // Requirements from Knex documentation. 
+      // Requirements from Knex documentation
       pool: {
         min: 2,
         max: 10,
@@ -33,3 +31,7 @@ module.exports = {
         directory: "./migrations",
       },
   };
+
+// Generate migration file: 'npx knex migrate:make [filename]'. 
+// Database schema builder, tables will be created there.
+// Run 'npx knex migrate:latest' to drop the schema builder (with all tables)

@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
 // POST comment
 router.post("/", async (req, res) => {
   try {
-    let comment = await queries.createComment({
+    const comment = await queries.createComment({
       word: `${req.body.word}`,
       comment: `${req.body.comment}`,
       author: `${req.body.author}`,
@@ -30,8 +30,8 @@ router.post("/", async (req, res) => {
 
 // DELETE comment
 router.delete("/", async (req, res) => {
-
   const token = req.headers['authorization'].split(' ')[1];
+
   try {
     jwt.verify(token, process.env.PRIVATE_KEY);
 
