@@ -16,6 +16,7 @@ module.exports = {
   readUserById,
   readAdminUser,
   updateUserPassword,
+  updateUserState,
   deleteUser,
 };
 
@@ -85,17 +86,19 @@ async function readAdminUser(email) {
 
 async function updateUserPassword(email, updatedPassword) {
   return await db("users")
-    .where({ email: email })
-    .update({ password: updatedPassword })
-    .then(() => {
-      return readUser(email);
-    });
+  .where({ email: email })
+  .update({ password: updatedPassword })
 }
-async function deleteUser(email) {
+
+async function updateUserState(email, state) {
   return await db("users")
-    .where({ email: email })
-    .del()
-    .then(() => {
+  .where({ email: email })
+  .update({ state: state })
+  .then(() => {  
       return readUser(email);
-    });
+  });
+}
+
+async function deleteUser(email) {
+  return await db("users").where({ email: email }).del()
 }

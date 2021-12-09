@@ -5,15 +5,12 @@ const router = express.Router();
 
 // GET comments
 router.get("/", (req, res) => {
-  queries
-    .readComments()
+  queries.readComments()
     .then((comments) => {
       res.status(200).json(comments);
     })
     .catch((error) => {
-      res
-        .status(500)
-        .json({ message: "Unable to perform the operation", error: error });
+      res.status(500).json({ message: "Unable to perform the operation", error: error });
     });
 });
 
@@ -27,29 +24,23 @@ router.post("/", async (req, res) => {
     });
     res.status(200).json(comment);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Unable to perform the operation", error: error });
+    res.status(500).json({ message: "Unable to perform the operation", error: error });
   }
 });
 
 // DELETE comment
 router.delete("/", async (req, res) => {
   const commentID = req.body.id;
-  await queries
-    .deleteComment(commentID)
+  await queries.deleteComment(commentID)
     .then((count) => {
-      if (count > 0) {
-        // Knex returns number of affected rows deleted.
-        res.status(200).json({ message: "Comment successfully deleted." });
+      if (count > 0) { // Knex returns number of affected rows deleted.
+        res.status(200).json({ message: "Record successfully deleted." });
       } else {
         res.status(404).json({ message: "Record not found." });
       }
     })
     .catch((error) => {
-      res
-        .status(500)
-        .json({ message: "Unable to perform the operation.", error: error });
+      res.status(500).json({ message: "Unable to perform the operation.", error: error });
     });
 });
 
@@ -60,9 +51,7 @@ router.patch("/", async (req, res) => {
     await queries.updateCommentVotes(commentID);
     res.status(200).json({ message: "Operation succesfull" });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Unable to perform operation", error: error });
+    res.status(500).json({ message: "Unable to perform operation", error: error });
   }
 });
 

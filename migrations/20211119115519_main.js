@@ -22,8 +22,8 @@ exports.up = function(knex) {
         tbl.text("email")
         tbl.text("password")
         tbl.text("role")
+        tbl.text("state") 
         tbl.timestamp("termsAcceptDate")
-        tbl.timestamp('created_at').defaultTo(knex.fn.now())
       })    
 };
 
