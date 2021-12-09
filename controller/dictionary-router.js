@@ -63,6 +63,33 @@ router.post("/:word", async (req, res) => {
   }
 });
 
-
+/*
+// PUT specific word
+router.put(
+  "/:word",
+  passport.authenticate("admin-local", { session: false }),
+  async (req, res) => {
+    //Check if the user from request is authorized admin user else send 401 error
+    if (req.isAuthenticated()) {
+      const reformInformation = req.body;
+      await queries
+        .updateWord(reformInformation)
+        .then((success) => {
+          res.status(200).json(success);
+        })
+        .catch((error) => {
+          res
+            .status(500)
+            .json({ message: "Unable to perform the operation", error: error });
+        });
+    } else {
+      res.status(401).json({
+        message: "Update failed as the user is not authorized",
+        success: false,
+      });
+    }
+  }
+);
+*/
 
 module.exports = router;

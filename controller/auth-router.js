@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 
 const router = express.Router() 
 
-// POST authentication & authorization
+// POST authentication & authorization log in
 router.post("/", async (req, res) => {
     const credentials = {
      email: req.body.email,
@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
             // Entrance granted. Credentials (email & password) provided is valid. Authentication successful & authorization permitted.
             const userActive = await queries.updateUserState(verification[0].email, "active") 
             const token = jwt.sign({ email: userActive[0].email }, process.env.PRIVATE_KEY, { 
-                expiresIn: "30s" 
+                expiresIn: "10h" 
          });
          // Variable 'token' is a public key. The function makes private key to have a connection with the value that 'token' variable gets.
          // When receiving this token from client, its possible to ensure it was provided from us with validation via private key.
