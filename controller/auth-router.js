@@ -22,16 +22,16 @@ router.post("/", async (req, res) => {
             const token = jwt.sign({ email: userActive[0].email }, process.env.PRIVATE_KEY, {  
                 expiresIn: "10h" 
          });
-         // Token that is generated here can be used to claim login
+         // Token that is generated here can be used to claim login.
          // This is a public key. This public key is mathematically related with our private key.
-         // Client use this public key to access rights/privileges to resources on server.
+         // Client use this public key to access privileges to resources from server.
          // We can ensure it was provided from us via validation with our private key.
             res.status(200).send({ token: token, user: verification[0] }) 
          } else {
-            res.status(401).send('Authentication unsuccessful. Lacks valid credentials');
+            res.status(403).send('Authentication unsuccessful. Lacks valid credentials');
         }
     } else {
-        res.status(403).send('Authorization unsuccessful. Lacks valid credentials');
+        res.status(401).send('Unauthorized. Request denied as it lacks valid authentication credentials for target resource.');
     }
 })
 
@@ -42,9 +42,10 @@ router.patch("/", async (req, res) => {
         jwt.verify(token, process.env.PRIVATE_KEY);
 
         await queries.updateUserState(req.body.user, "inactive")
+        
         res.status(200).json({ message: "Users state switched to inactive" });
     } catch {
-        res.status(401).json({ message: "Unauthorized. Client must authenticate for the request." }) 
+        res.status(401).json({ message: "Unauthorized. Request denied as it lacks valid authentication credentials for target resource." })         
     }    
 });
 

@@ -52,12 +52,12 @@ router.post("/:word", async (req, res) => {
       const author = req.body.author;
 
       await queries.createWord({ letter: letter, word: word, information: information, author: author })
-      res.status(201).json({ message: "Word successfully created" });
+      res.status(201).json({ message: "Request has been fulfilled. New resource created." });
       } else {
         res.status(403).json({ message: "Client does not have access rights" }) 
       }   
   } catch {
-    res.status(401).json({ message: "Unauthorized. Client must authenticate for the request." }) 
+    res.status(401).json({ message: "Unauthorized. Request denied as it lacks valid authentication credentials for target resource." })         
   }
 });
 
@@ -74,7 +74,7 @@ router.put("/:word", async (req, res) => {
       res.status(403).json({ message: "Client does not have access rights" }) 
     }   
   } catch {
-    res.status(401).json({ message: "Unauthorized. Client must authenticate for the request." }) 
+    res.status(401).json({ message: "Unauthorized. Request denied as it lacks valid authentication credentials for target resource." })         
   }
 });
 

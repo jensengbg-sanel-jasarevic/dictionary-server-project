@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
       res.status(500).json({ message: "Unable to perform the operation" });
     }    
   } catch (error) {
-    res.status(401).json({ message: "Unauthorized. Client must authenticate for the request." }) 
+    res.status(401).json({ message: "Unauthorized. Request denied as it lacks valid authentication credentials for target resource." })         
   }
 });
 
@@ -39,13 +39,15 @@ router.delete("/", async (req, res) => {
 
     if (req.body.role === "admin") {
       const commentID = req.body.id;
+
       await queries.deleteComment(commentID)
-      res.status(200).json({ message: "Record successfully deleted" });
+      
+      res.status(200).json({ message: "The request has succeeded" });
     } else {
-      res.status(403).json({ message: "Client does not have access rights" }) 
+      res.status(403).json({ message: "Client is not permitted access to the resource" }) 
     }   
   } catch {
-    res.status(401).json({ message: "Unauthorized. Client must authenticate to get the requested response." }) 
+    res.status(401).json({ message: "Unauthorized. Request denied as it lacks valid authentication credentials for target resource." })         
   }
 });
 
@@ -54,7 +56,7 @@ router.patch("/", async (req, res) => {
   const commentID = req.body.commentID;
   try {
     await queries.updateCommentVotes(commentID);
-    res.status(200).json({ message: "Operation succesfull" });
+    res.status(200).json({ message: "The request has succeeded" });
   } catch (error) {
     res.status(500).json({ message: "Unable to perform operation", error: error });
   }

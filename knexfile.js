@@ -1,9 +1,8 @@
-// Database configuration for development & production. The app will interact with one of these databases.
-// Settings for organizing where database file should be stored locally & on Internet
+// Database configuration for development & production. App will interact with one of these databases
 
 module.exports = {
     development: {
-      client: 'sqlite3', // Determine which database management system to use
+      client: 'sqlite3', // Database management system to use
       useNullAsDefault: true, 
       connection: {
         filename: "./model/data/main.db3", // File extension suffix '.db3' indicates that the data in this type of file format is organized in a way that SQLite software can open it
@@ -32,6 +31,6 @@ module.exports = {
       },
   };
 
-// Generate migration file: 'npx knex migrate:make [filename]'.
-// Schema builder for database will be in migration file. The plan for how the database will be constructed will be created there.
-// To run a migration: 'npx knex migrate:latest'.
+// Generate migration file: 'npx knex migrate:make [filename]'
+// Schema builder for database will be in migration file. The plan for how the database will be constructed will be created there
+// To run a migration: 'npx knex migrate:latest'
