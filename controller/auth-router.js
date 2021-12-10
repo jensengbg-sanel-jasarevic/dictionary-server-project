@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
          // We can ensure it was provided from us via validation with our private key.
             res.status(200).send({ token: token, user: verification[0] }) 
          } else {
-            res.status(403).send('Authentication unsuccessful. Lacks valid credentials');
+            res.status(400).send('Server cannot process request due to a client error. Authentication unsuccessful, lacks valid credentials.');
         }
     } else {
         res.status(401).send('Unauthorized. Request denied as it lacks valid authentication credentials for target resource.');
@@ -43,7 +43,7 @@ router.patch("/", async (req, res) => {
 
         await queries.updateUserState(req.body.user, "inactive")
         
-        res.status(200).json({ message: "Users state switched to inactive" });
+        res.status(200).json({ message: "The request has succeeded." });
     } catch {
         res.status(401).json({ message: "Unauthorized. Request denied as it lacks valid authentication credentials for target resource." })         
     }    

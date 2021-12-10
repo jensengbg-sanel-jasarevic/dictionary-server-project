@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
     .then((comments) => {
       res.status(200).json(comments);
     }).catch((error) => {
-      res.status(500).json({ message: "Unable to perform the operation", error: error });
+      res.status(500).json({ message: "Server encountered an unexpected condition which prevented it from fulfilling the request.", error: error });
     });
 });
 
@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
       const comment = await queries.createComment({ word: `${req.body.word}`, comment: `${req.body.comment}`, author: `${req.body.author}`});
       res.status(200).json(comment);  
     } else {
-      res.status(500).json({ message: "Unable to perform the operation" });
+      res.status(400).json({ message: "Server cannot process request due to a client error." });
     }    
   } catch (error) {
     res.status(401).json({ message: "Unauthorized. Request denied as it lacks valid authentication credentials for target resource." })         
@@ -42,9 +42,9 @@ router.delete("/", async (req, res) => {
 
       await queries.deleteComment(commentID)
       
-      res.status(200).json({ message: "The request has succeeded" });
+      res.status(200).json({ message: "The request has succeeded." });
     } else {
-      res.status(403).json({ message: "Client is not permitted access to the resource" }) 
+      res.status(403).json({ message: "Client is not permitted the access." }) 
     }   
   } catch {
     res.status(401).json({ message: "Unauthorized. Request denied as it lacks valid authentication credentials for target resource." })         
@@ -58,7 +58,7 @@ router.patch("/", async (req, res) => {
     await queries.updateCommentVotes(commentID);
     res.status(200).json({ message: "The request has succeeded" });
   } catch (error) {
-    res.status(500).json({ message: "Unable to perform operation", error: error });
+    res.status(500).json({ message: "Server encountered an unexpected condition which prevented it from fulfilling the request.", error: error });
   }
 });
 

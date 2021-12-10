@@ -41,7 +41,7 @@ router.patch("/", async (req, res) => {
         if (updatePassword < 1) {
             res.status(404).json({ message: "Requested resource could not be found." });
         } else {
-            res.status(200).json({ message: "User password successfully updated" });
+            res.status(200).json({ message: "The request has succeeded." });
         }
     } catch {
         res.status(401).json({ message: "Unauthorized. Request denied as it lacks valid authentication credentials for target resource." })         
@@ -57,9 +57,9 @@ router.delete("/", async (req, res) => {
         await queries.deleteUser(req.body.email)
         .then(count => { 
             if (count > 0) { 
-                res.status(200).json({ message: "Account successfully deleted" });
+                res.status(200).json({ message: "The request has succeeded." });
             } else { 
-                res.status(404).json({ message: "Account not found" });
+                res.status(404).json({ message: "Requested resource could not be found." });
             }
         })
     } catch {
