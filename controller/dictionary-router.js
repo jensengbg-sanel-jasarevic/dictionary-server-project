@@ -48,7 +48,7 @@ router.post("/:word", async (req, res) => {
       // Collect form values
       const letter = req.params.word.charAt(0).toLowerCase();
       const word = req.params.word.toUpperCase();
-      const information = req.body.information;
+      const information = req.body.info;
       const author = req.body.author;
 
       await queries.createWord({ letter: letter, word: word, information: information, author: author })

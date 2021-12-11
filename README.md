@@ -1,5 +1,5 @@
-## Backend - Online Dictionary
-Server software.
+## Backend - Web Dictionary
+Server software. 
 
 ### Web address URL
 https://serverexamensarbete.herokuapp.com/
