@@ -38,7 +38,7 @@ async function updateWord(payload) {
     .where({ word: payload.word })
     .update({
       information: payload.comment,
-      author: payload.author,
+      author: payload.author
     })
     .then(() => {
       return readWord(payload.word);
@@ -50,7 +50,7 @@ async function createComment(comment) {
 }
 
 async function readComments() {
-  return db("comments").orderBy("id");
+  return await db("comments").orderBy("id");
 }
 
 async function updateCommentVotes(commentID) {
@@ -58,7 +58,7 @@ async function updateCommentVotes(commentID) {
 }
 
 async function deleteComment(commentID) {
-  return db("comments").where({ id: commentID }).del();
+  return await db("comments").where({ id: commentID }).del();
 }
 
 async function createUser(user) {
@@ -70,9 +70,7 @@ async function readUser(email) {
 }
 
 async function updateUserPassword(email, updatedPassword) {
-  return await db("users")
-  .where({ email: email })
-  .update({ password: updatedPassword })
+  return await db("users").where({ email: email }).update({ password: updatedPassword })
 }
 
 async function updateUserState(email, state) {

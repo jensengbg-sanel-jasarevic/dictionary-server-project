@@ -4,7 +4,7 @@ exports.up = function(knex) {
         tbl.increments() // For identifying a resource, URI (Uniform Resource Identifier)
         tbl.text("letter")
         tbl.text("word")
-        tbl.text("information")
+        tbl.text("definition")
         tbl.text("author")
       })
       .createTable("comments", tbl => { 
@@ -21,8 +21,9 @@ exports.up = function(knex) {
         tbl.text("lastname")
         tbl.text("email")
         tbl.text("password")
+        tbl.text("secret")
         tbl.text("role")
-        tbl.text("state") 
+        tbl.text("state")
         tbl.timestamp("termsAcceptDate")
       })    
 };

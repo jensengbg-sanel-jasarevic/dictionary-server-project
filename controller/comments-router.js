@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
     jwt.verify(token, process.env.PRIVATE_KEY);
     
     if(req.body.word && req.body.comment && req.body.author) {
-      const comment = await queries.createComment({ word: `${req.body.word}`, comment: `${req.body.comment}`, author: `${req.body.author}`});
+      const comment = await queries.createComment({ word: `${req.body.word}`, comment: `${req.body.comment}`, author: `${req.body.author}`, email: `${req.body.email}`});
       res.status(200).json(comment);  
     } else {
       res.status(400).json({ message: "Server cannot process request due to a client error." });

@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 const salt = bcrypt.genSaltSync(10);
 const router = express.Router() 
 
-// POST new account
+// POST account
 router.post("/", async (req, res) => {
     const HASHED_PASSWORD = await bcrypt.hashSync(req.body.password, salt)
     
