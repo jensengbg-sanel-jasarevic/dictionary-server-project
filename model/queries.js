@@ -27,7 +27,7 @@ async function readWords() {
 }
 
 async function readWordsByLetter(letter) {
-  return await db("dictionary").where({ letter: letter });
+  return await db("dictionary").where({ letter: letter }).orderBy("word");
 }
 
 async function readWord(word) {
@@ -35,11 +35,10 @@ async function readWord(word) {
 }
 
 async function updateWord(payload) {
-  console.log(payload)
   return await db("dictionary")
     .where({ word: payload.word })
     .update({
-      definition: payload.comment,
+      definition: payload.updateDefinition,
       author: payload.author
     })
     .then(() => {
