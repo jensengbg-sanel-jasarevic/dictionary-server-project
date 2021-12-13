@@ -1,151 +1,110 @@
 const queries = require("../model/queries.js");
 const express = require("express");
-const passport = require("passport");
-const passportConfig = require("../passport");
+const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
 // GET all words
 router.get("/words", async (req, res) => {
-  await queries
-    .readWords()
-
+  await queries.readWords()
     .then((success) => {
       res.status(200).json(success);
-    })
-    .catch((error) => {
-      res
-        .status(500)
-        .json({ message: "Unable to retrieve the dictionary", error: error });
+    }).catch((error) => {
+      res.status(500).json({ message: "Server encountered an unexpected condition which prevented it from fulfilling the request.", error: error });
     });
 });
 
 // GET all words by specific letter
 router.get("/words/:letter", async (req, res) => {
-  await queries
-    .readWordsByLetter(req.params.letter)
-
+  await queries.readWordsByLetter(req.params.letter)
     .then((success) => {
       res.status(200).json(success);
-    })
-    .catch((error) => {
-      res
-        .status(500)
-        .json({ message: "Unable to perform the operation", error: error });
+    }).catch((error) => {
+      res.status(500).json({ message: "Server encountered an unexpected condition which prevented it from fulfilling the request.", error: error });
     });
 });
 
-// GET specific word
+// GET word
 router.get("/:word", async (req, res) => {
-  await queries
-    .readWord(req.params.word)
-
+  await queries.readWord(req.params.word)
     .then((success) => {
       if (success.length > 0) {
         res.status(200).json(success);
       } else {
-        res.status(404).json({ message: "Record not found" });
+        res.status(404).json({ message: "Record not found." });
       }
-    })
-    .catch((error) => {
-      res
-        .status(500)
-        .json({ message: "Unable to perform the operation", error: error });
+    }).catch((error) => {
+      res.status(500).json({ message: "Server encountered an unexpected condition which prevented it from fulfilling the request.", error: error });
     });
 });
 
-// POST specific word
-router.post(
-  "/:word",
-  passport.authenticate("admin-local", { session: false }),
-  async (req, res) => {
-    //Check if the user from request is authorized admin user else send 401 error
-    if (req.isAuthenticated()) {
-      // Collect form values
-      const letter = req.params.word.charAt(0).toLowerCase();
-      const word = req.params.word.toUpperCase();
-      const information = req.body.information;
-      const author = req.body.author;
+// POST word
+router.post("/:word", async (req, res) => {
+  try {
+    const token = req.headers['authorization'].split(' ')[1];
+    jwt.verify(token, process.env.PRIVATE_KEY);
+    const word = req.params.word.toUpperCase();
 
-      await queries
-        .createWord({
-          letter: letter,
-          word: word,
-          information: information,
-          author: author,
-        })
-        // Method is passed a argument as a value.
-        // Method receives a value as a parameter.
-
-        .then((success) => {
-          res.status(200).json(success);
-        })
-        .catch((error) => {
-          res
-            .status(500)
-            .json({ message: "Unable to perform the operation", error: error });
-        });
-    } else {
-      res.status(401).json({
-        message: "Create failed as the user is not authorized",
-        success: false,
-      });
-    }
-  }
-);
-
-// PUT specific word
-router.put(
-  "/:word",
-  passport.authenticate("admin-local", { session: false }),
-  async (req, res) => {
-    //Check if the user from request is authorized admin user else send 401 error
-    if (req.isAuthenticated()) {
-      const reformInformation = req.body;
-      await queries
-        .updateWord(reformInformation)
-        .then((success) => {
-          res.status(200).json(success);
-        })
-        .catch((error) => {
-          res
-            .status(500)
-            .json({ message: "Unable to perform the operation", error: error });
-        });
-    } else {
-      res.status(401).json({
-        message: "Update failed as the user is not authorized",
-        success: false,
-      });
-    }
-  }
-);
-
-router.delete(
-  "/",
-  passport.authenticate("admin-local", { session: false }),
-  (req, res) => {
-    if (req.isAuthenticated()) {
-      const word = req.body;
-      queries.deleteUser(word).then((deletedWord) => {
-        if (Object.keys(deletedWord).length == 0) {
-          res.status(200).json({
-            success: true,
-            message: "Successfully deleted",
-          });
+    if (req.body.role === "admin") {
+      queries.readWord(word).then((value) => {
+        if (value.length) {
+            res.status(422).json("Request will not be processed. Record already exists.")
         } else {
-          res.status(500).json({
-            message: "Delete failed",
-          });
-        }
-      });
-    } else {
-      console.log("Not authorized");
-      res.status(401).json({
-        message: "Not authorized",
-      });
-    }
+            // Collect form values
+            const letter = req.params.word.charAt(0).toLowerCase();
+            const definition = req.body.definition;
+            const author = req.body.author;
+            queries.createWord({ letter: letter, word: word, definition: definition, author: author })
+            res.status(201).json({ message: "Request has been fulfilled. New resource created." });
+          } 
+        })
+      } else {
+        res.status(403).json({ message: "Client is not permitted the access." }) 
+      }   
+  } catch {
+    res.status(401).json({ message: "Unauthorized. Request denied as it lacks valid authentication credentials for target resource." })         
   }
-);
+});
+
+// DELETE word
+router.delete("/:word", async (req, res) => {
+  try {
+    const token = req.headers['authorization'].split(' ')[1];
+    jwt.verify(token, process.env.PRIVATE_KEY);
+
+    if (req.body.role === "admin") {
+      const word = req.params.word.toUpperCase()
+      queries.readWord(word).then((value) => {
+        if (value.length) {
+          queries.deleteWord(word)      
+          res.status(200).json({ message: "The request has succeeded." });
+        } else {
+          res.status(404).json("Request will not be processed. Record does not exist.")
+          } 
+        })
+    } else {
+      res.status(403).json({ message: "Client is not permitted the access." }) 
+    }   
+  } catch {
+    res.status(401).json({ message: "Unauthorized. Request denied as it lacks valid authentication credentials for target resource." })         
+  }
+});
+
+// PUT word
+router.put("/:word", async (req, res) => { 
+  try {
+    const token = req.headers['authorization'].split(' ')[1];
+    jwt.verify(token, process.env.PRIVATE_KEY);
+
+    if (req.body.role === "admin") {
+      await queries.updateWord(req.body.updateDefinition)
+      res.status(200).json({ message: "Request has been fulfilled." });
+    } else {
+      res.status(403).json({ message: "Client is not permitted the access." }) 
+    }   
+  } catch {
+    res.status(401).json({ message: "Unauthorized. Request denied as it lacks valid authentication credentials for target resource." })         
+  }
+});
 
 module.exports = router;

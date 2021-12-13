@@ -1,4 +1,4 @@
-const db = require("../dbConfiguration.js");
+const db = require("./index-db.js");
 
 module.exports = {
   createWord,
@@ -13,10 +13,9 @@ module.exports = {
   deleteComment,
   createUser,
   readUser,
-  readUserById,
-  readAdminUser,
   updateUserPassword,
-  deleteUser,
+  updateUserState,
+  deleteUser
 };
 
 async function createWord(word) {
@@ -35,20 +34,21 @@ async function readWord(word) {
   return await db("dictionary").where({ word: word });
 }
 
-async function updateWord(reformInformation) {
+async function updateWord(payload) {
+  console.log(payload)
   return await db("dictionary")
-    .where({ word: reformInformation.word })
+    .where({ word: payload.word })
     .update({
-      information: reformInformation.comment,
-      author: reformInformation.author,
+      definition: payload.comment,
+      author: payload.author
     })
     .then(() => {
-      return readWord(reformInformation.word);
+      return readWord(payload.word);
     });
 }
 
-function deleteWord(word) {
-  return db("dictionary").where({ word: word }).del();
+async function deleteWord(word) {
+  return await db("dictionary").where({ word: word }).del();
 }
 
 async function createComment(comment) {
@@ -56,15 +56,15 @@ async function createComment(comment) {
 }
 
 async function readComments() {
-  return db("comments").orderBy("id");
+  return await db("comments").orderBy("id");
 }
 
 async function updateCommentVotes(commentID) {
   return await db("comments").where({ id: commentID }).increment("votes", 1);
 }
 
-function deleteComment(commentID) {
-  return db("comments").where({ id: commentID }).del();
+async function deleteComment(commentID) {
+  return await db("comments").where({ id: commentID }).del();
 }
 
 async function createUser(user) {
@@ -75,27 +75,19 @@ async function readUser(email) {
   return await db("users").where({ email: email });
 }
 
-async function readUserById(id) {
-  return await db("users").where({ id: id });
-}
-
-async function readAdminUser(email) {
-  return await db("users").where({ email: email }).andWhere({ role: "admin" });
-}
-
 async function updateUserPassword(email, updatedPassword) {
-  return await db("users")
-    .where({ email: email })
-    .update({ password: updatedPassword })
-    .then(() => {
-      return readUser(email);
-    });
+  return await db("users").where({ email: email }).update({ password: updatedPassword })
 }
-async function deleteUser(email) {
+
+async function updateUserState(email, state) {
   return await db("users")
-    .where({ email: email })
-    .del()
-    .then(() => {
+  .where({ email: email })
+  .update({ state: state })
+  .then(() => {  
       return readUser(email);
-    });
+  });
+}
+
+async function deleteUser(email) {
+  return await db("users").where({ email: email }).del()
 }
