@@ -52,10 +52,10 @@ test("should successfully update a definition for a word from the 'Dictionary' t
     let actual;
     
     // Act
-    await queries.createWord({ word: "abc", information: "default info" }) 
-    await queries.updateWord({ word: "abc", comment: "updated info" })
+    await queries.createWord({ word: "abc", definition: "default info" }) 
+    await queries.updateWord({ word: "abc", updateDefinition: "updated info" })
     .then((response) => {
-        actual = response[0].information
+        actual = response[0].definition
     })
 
     // Assert
