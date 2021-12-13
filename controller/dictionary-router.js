@@ -43,19 +43,48 @@ router.post("/:word", async (req, res) => {
   try {
     const token = req.headers['authorization'].split(' ')[1];
     jwt.verify(token, process.env.PRIVATE_KEY);
+    const word = req.params.word.toUpperCase();
 
     if (req.body.role === "admin") {
-      // Collect form values
-      const letter = req.params.word.charAt(0).toLowerCase();
-      const word = req.params.word.toUpperCase();
-      const definition = req.body.definition;
-      const author = req.body.author;
-
-      await queries.createWord({ letter: letter, word: word, definition: definition, author: author })
-      res.status(201).json({ message: "Request has been fulfilled. New resource created." });
+      queries.readWord(word).then((value) => {
+        if (value.length) {
+            res.status(422).json("Request will not be processed. Record already exists.")
+        } else {
+            // Collect form values
+            const letter = req.params.word.charAt(0).toLowerCase();
+            const definition = req.body.definition;
+            const author = req.body.author;
+            queries.createWord({ letter: letter, word: word, definition: definition, author: author })
+            res.status(201).json({ message: "Request has been fulfilled. New resource created." });
+          } 
+        })
       } else {
         res.status(403).json({ message: "Client is not permitted the access." }) 
       }   
+  } catch {
+    res.status(401).json({ message: "Unauthorized. Request denied as it lacks valid authentication credentials for target resource." })         
+  }
+});
+
+// DELETE word
+router.delete("/:word", async (req, res) => {
+  try {
+    const token = req.headers['authorization'].split(' ')[1];
+    jwt.verify(token, process.env.PRIVATE_KEY);
+
+    if (req.body.role === "admin") {
+      const word = req.params.word.toUpperCase()
+      queries.readWord(word).then((value) => {
+        if (value.length) {
+          queries.deleteWord(word)      
+          res.status(200).json({ message: "The request has succeeded." });
+        } else {
+          res.status(404).json("Request will not be processed. Record does not exist.")
+          } 
+        })
+    } else {
+      res.status(403).json({ message: "Client is not permitted the access." }) 
+    }   
   } catch {
     res.status(401).json({ message: "Unauthorized. Request denied as it lacks valid authentication credentials for target resource." })         
   }

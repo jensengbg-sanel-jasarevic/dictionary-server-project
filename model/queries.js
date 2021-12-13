@@ -6,6 +6,7 @@ module.exports = {
   readWordsByLetter,
   readWord,
   updateWord,
+  deleteWord,
   createComment,
   readComments,
   updateCommentVotes,
@@ -43,6 +44,10 @@ async function updateWord(payload) {
     .then(() => {
       return readWord(payload.word);
     });
+}
+
+async function deleteWord(word) {
+  return await db("dictionary").where({ word: word }).del();
 }
 
 async function createComment(comment) {
