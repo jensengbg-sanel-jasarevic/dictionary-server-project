@@ -35,10 +35,11 @@ async function readWord(word) {
 }
 
 async function updateWord(payload) {
+  console.log(payload)
   return await db("dictionary")
     .where({ word: payload.word })
     .update({
-      information: payload.comment,
+      definition: payload.comment,
       author: payload.author
     })
     .then(() => {
