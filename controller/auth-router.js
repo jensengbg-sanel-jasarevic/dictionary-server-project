@@ -18,9 +18,10 @@ router.post("/", async (req, res) => {
         const authentication = await bcrypt.compareSync(credentials.password, verification[0].password)
          if (authentication){
             // Entrance granted. Credentials (email & password) provided is valid. Authentication successful & authorization permitted.
-            const userActive = await queries.updateUserState(verification[0].email, "active") 
-            const token = jwt.sign({ email: userActive[0].email }, process.env.PRIVATE_KEY, {  
-                expiresIn: "10h" 
+            const token = jwt.sign({ email: verification[0].email }, process.env.PRIVATE_KEY, {  
+                expiresIn: "1h" 
+            // Reasonable expiration time on the token. Short-lived token requires user to authenticate once again after certain time for security reasons.
+            // This minimizes the potential damage if token is stolen, attackers can only use token until it expires (for that reason it should not be valid for a long period of time).
          });
          // Token that is generated here can be used to claim login.
          // This is a public key. This public key is mathematically related with our private key.
@@ -39,10 +40,7 @@ router.post("/", async (req, res) => {
 router.patch("/", async (req, res) => {
     try {
         const token = req.headers['authorization'].split(' ')[1];
-        jwt.verify(token, process.env.PRIVATE_KEY);
-
-        await queries.updateUserState(req.body.user, "inactive")
-        
+        jwt.verify(token, process.env.PRIVATE_KEY);        
         res.status(200).json({ message: "The request has succeeded." });
     } catch {
         res.status(401).json({ message: "Unauthorized. Request denied as it lacks valid authentication credentials for target resource." })         

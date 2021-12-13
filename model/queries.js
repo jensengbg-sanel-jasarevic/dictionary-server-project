@@ -14,7 +14,6 @@ module.exports = {
   createUser,
   readUser,
   updateUserPassword,
-  updateUserState,
   deleteUser
 };
 
@@ -76,15 +75,6 @@ async function readUser(email) {
 
 async function updateUserPassword(email, updatedPassword) {
   return await db("users").where({ email: email }).update({ password: updatedPassword })
-}
-
-async function updateUserState(email, state) {
-  return await db("users")
-  .where({ email: email })
-  .update({ state: state })
-  .then(() => {  
-      return readUser(email);
-  });
 }
 
 async function deleteUser(email) {
