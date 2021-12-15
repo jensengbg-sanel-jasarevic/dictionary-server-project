@@ -41,11 +41,6 @@ router.post("/", async (req, res) => {
 // PATCH account password
 router.patch("/", async (req, res) => {
   try {
-    let verifiedUser = req.body.verifiedUser;
-    if (!verifiedUser) {
-      const token = req.headers["authorization"].split(" ")[1];
-      jwt.verify(token, process.env.PRIVATE_KEY);
-    }
     const newPassword = await bcrypt.hashSync(req.body.newPassword, salt);
 
     const updatePassword = await queries.updateUserPassword(

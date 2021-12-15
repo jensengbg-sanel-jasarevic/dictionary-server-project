@@ -58,12 +58,10 @@ router.patch("/", async (req, res) => {
     jwt.verify(token, process.env.PRIVATE_KEY);
     res.status(200).json({ message: "The request has succeeded." });
   } catch {
-    res
-      .status(401)
-      .json({
-        message:
-          "Unauthorized. Request denied as it lacks valid authentication credentials for target resource.",
-      });
+    res.status(401).json({
+      message:
+        "Unauthorized. Request denied as it lacks valid authentication credentials for target resource.",
+    });
   }
 });
 

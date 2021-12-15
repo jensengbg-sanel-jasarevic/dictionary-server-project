@@ -21,7 +21,7 @@ exports.up = function(knex) {
         tbl.text("lastname")
         tbl.text("email")
         tbl.text("password")
-        tbl.text("secretKey")
+        tbl.text("secret")
         tbl.text("role")
         tbl.timestamp("termsAcceptDate")
       })    
