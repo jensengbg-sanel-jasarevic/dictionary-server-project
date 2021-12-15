@@ -54,8 +54,6 @@ router.post("/", async (req, res) => {
 // PATCH authorization
 router.patch("/", async (req, res) => {
   try {
-    const token = req.headers["authorization"].split(" ")[1];
-    jwt.verify(token, process.env.PRIVATE_KEY);
     res.status(200).json({ message: "The request has succeeded." });
   } catch {
     res.status(401).json({
