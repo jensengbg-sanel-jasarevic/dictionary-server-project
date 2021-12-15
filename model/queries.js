@@ -14,7 +14,6 @@ module.exports = {
   createUser,
   readUser,
   updateUserPassword,
-  updateUserState,
   deleteUser,
   updateUserSecret,
 };
@@ -28,7 +27,7 @@ async function readWords() {
 }
 
 async function readWordsByLetter(letter) {
-  return await db("dictionary").where({ letter: letter });
+  return await db("dictionary").where({ letter: letter }).orderBy("word");
 }
 
 async function readWord(word) {
@@ -36,12 +35,11 @@ async function readWord(word) {
 }
 
 async function updateWord(payload) {
-  console.log(payload);
   return await db("dictionary")
     .where({ word: payload.word })
     .update({
-      definition: payload.comment,
-      author: payload.author,
+      definition: payload.updateDefinition,
+      author: payload.author
     })
     .then(() => {
       return readWord(payload.word);
@@ -80,15 +78,6 @@ async function updateUserPassword(email, updatedPassword) {
   return await db("users")
     .where({ email: email })
     .update({ password: updatedPassword });
-}
-
-async function updateUserState(email, state) {
-  return await db("users")
-    .where({ email: email })
-    .update({ state: state })
-    .then(() => {
-      return readUser(email);
-    });
 }
 
 async function deleteUser(email) {

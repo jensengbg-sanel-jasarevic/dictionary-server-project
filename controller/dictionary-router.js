@@ -97,8 +97,13 @@ router.put("/:word", async (req, res) => {
     jwt.verify(token, process.env.PRIVATE_KEY);
 
     if (req.body.role === "admin") {
-      await queries.updateWord(req.body.updateDefinition)
-      res.status(200).json({ message: "Request has been fulfilled." });
+      queries.updateWord(req.body).then((value) => {
+        if (value.length) {
+          res.status(200).json({ message: "The request has succeeded." });
+        } else {
+          res.status(404).json("Request will not be processed. Record does not exist.")
+          } 
+        })
     } else {
       res.status(403).json({ message: "Client is not permitted the access." }) 
     }   

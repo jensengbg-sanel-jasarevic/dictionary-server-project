@@ -23,7 +23,6 @@ exports.up = function(knex) {
         tbl.text("password")
         tbl.text("secret")
         tbl.text("role")
-        tbl.text("state")
         tbl.timestamp("termsAcceptDate")
       })    
 };
