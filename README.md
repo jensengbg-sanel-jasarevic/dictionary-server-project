@@ -2,4 +2,4 @@
 Server software. 
 
 ### Web address URL
-https://serverexamensarbete.herokuapp.com/
+https://dictionary-server-project.herokuapp.com/
