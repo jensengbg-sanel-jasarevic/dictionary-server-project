@@ -1,5 +1,5 @@
-## Backend - Web Dictionary
-Server software. 
-
-### Web address URL
+#### Web address URL
 https://dictionary-server-project.herokuapp.com/
+
+# Project: Web Dictionary
+Backend. Server software.
